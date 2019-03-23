@@ -3,10 +3,10 @@ import AppBar from '@material-ui/core/AppBar';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabContainer from '../../components/TabContainer/TabContainer';
+import Grid from '@material-ui/core/Grid';
 import MediaCard from '../../components/Crads/MediaCard';
-
 import axios from 'axios';
+
 
 const styles = theme => ({
   root: {
@@ -14,32 +14,16 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
+  wrapper: {
+    padding: '16px'
+  }
 });
-
-// const genres = [
-//   {
-//     id: 0,
-//     value: 'balck-metal',   
-//   },  
-//   {
-//     id: 1,
-//     value: 'deep-house',
-//   },
-//   {
-//     id: 2,
-//     value: 'drum-and-bass',
-//   },
-//   {
-//     id: 3,
-//     value: 'electro',
-//   }
-// ]
 
 export class GenresBar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      value: 'black-metal',
+      value: 'heavy-metal',
       seedGenres: '',
       tracks: [],
       isLoading: false,
@@ -73,29 +57,15 @@ export class GenresBar extends Component {
       isLoading: false
     }));
   }
-  
-  // selectGenres = () => { 
-  //    for(let i = 0; i < genres.length; i++ ) {
-  //      if (genres[i].id === this.state.value) {
-  //          this.setState({ seedGenres: genres[i].value })
-  //      }
-  //      alert(this.state.seedGenres);
-  //    }
-  // }
-
-  selectGenres = (event, ref) => {
-    // this.setState({ seedGenres: refs })
-    const node = this.myRef.current;
-    console.log(node);
-  }
 
   handleChange = (event, value) => {
-    this.setState({ value });
-    this.getData();
+    this.setState({ value },() => {
+      this.getData();
+    })
   };
 
-
     render() {
+      const { classes } = this.props;
       const { value, tracks } = this.state;
       console.info('track', tracks);
       console.info('Genres',value);
@@ -110,19 +80,26 @@ export class GenresBar extends Component {
             variant="scrollable"
             scrollButtons="auto"
           >
-        
-            <Tab label="Rock" value='black-metal' />
+            <Tab label="Rock" value='heavy-metal' />
             <Tab label="House" value="deep-house" />
             <Tab label="Drum and Base" value="drum-and-bass" />
             <Tab label="Electro" value="electro"/>
           </Tabs>
         </AppBar>
+        <Grid container
+        className={classes.wrapper}
+        spacing={16}
+        direction='row'
+        alignItems='center'
+        justify='center'>
+        
+        <MediaCard tracks={tracks}></MediaCard>
 
-        {value === 'black-metal' && <MediaCard tracks={tracks}></MediaCard>}
+        {/* {value === 'heavy-metal' && <MediaCard tracks={tracks}></MediaCard>}
         {value === 'deep-house' && <MediaCard tracks={tracks}></MediaCard>}
         {value === 'drum-and-bass' && <MediaCard tracks={tracks}></MediaCard>}
-        {value === 'electro' && <MediaCard tracks={tracks}></MediaCard>}
-        
+        {value === 'electro' && <MediaCard tracks={tracks}></MediaCard>} */}
+        </ Grid>
       </div>
     )
   }

@@ -37,13 +37,13 @@ const styles = theme => ({
 });
 
 const MediaCard = (props) => {
-  const { classes, theme, tracks } = props;
-  console.info("data from MediaCard", tracks);
-
+  const { classes } = props;
+  // console.info("data from MediaCard", tracks);
   return (
     <React.Fragment>
       {props.tracks.map(track => (
-        <Card key={track.id}className={classes.card}>
+        <Grid key={track.id} item>
+        <Card className={classes.card}>
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5">
@@ -55,7 +55,7 @@ const MediaCard = (props) => {
             </CardContent>
             <div className={classes.controls}>
               <IconButton aria-label="Play/pause">
-                <PlayArrowIcon className={classes.playIcon} />
+                <PlayArrowIcon className={classes.playIcon} href={track.external_urls.spotify} />
               </IconButton>
             </div>
           </div>
@@ -65,12 +65,13 @@ const MediaCard = (props) => {
             title="Live from space album cover"
           />
         </Card>
+        </Grid>
       ))}
     </React.Fragment>
   )
 }
 MediaCard.propTypes = {
-  tracks: PropTypes.array
+  tracks: PropTypes.array.isRequired
 }
 
 export default withStyles(styles)(MediaCard)
