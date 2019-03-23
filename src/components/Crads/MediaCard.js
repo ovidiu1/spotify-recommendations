@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -42,14 +43,14 @@ const MediaCard = (props) => {
   return (
     <React.Fragment>
       {props.tracks.map(track => (
-        <Card key={track.id} className={classes.card}>
+        <Card key={track.id}className={classes.card}>
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5">
-                Live From Space
+                {track.artists[0].name}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                Mac Miller
+                {track.name}
               </Typography>
             </CardContent>
             <div className={classes.controls}>
@@ -60,38 +61,12 @@ const MediaCard = (props) => {
           </div>
           <CardMedia
             className={classes.cover}
-            image="http://static1.squarespace.com/static/5957f2a8893fc0dd4859649f/5a6e3e0fe4966b35d920f21f/5c24fae321c67c6c46cc5b78/1545928799292/IMG_2096.JPG?format=1500w"
+            image={track.album.images[0].url}
             title="Live from space album cover"
           />
         </Card>
       ))}
     </React.Fragment>
-    // <React.Fragment>
-    //   <Card className={classes.card}>
-    //     <div className={classes.details}>
-    //       <CardContent className={classes.content}>
-    //         <Typography component="h5" variant="h5">
-    //           Live From Space
-    //       </Typography>
-    //         <Typography variant="subtitle1" color="textSecondary">
-    //           Mac Miller
-    //       </Typography>
-    //       </CardContent>
-    //       <div className={classes.controls}>
-
-    //         <IconButton aria-label="Play/pause">
-    //           <PlayArrowIcon className={classes.playIcon} />
-    //         </IconButton>
-
-    //       </div>
-    //     </div>
-    //     <CardMedia
-    //       className={classes.cover}
-    //       image="http://static1.squarespace.com/static/5957f2a8893fc0dd4859649f/5a6e3e0fe4966b35d920f21f/5c24fae321c67c6c46cc5b78/1545928799292/IMG_2096.JPG?format=1500w"
-    //       title="Live from space album cover"
-    //     />
-    //   </Card>
-    // </React.Fragment>
   )
 }
 MediaCard.propTypes = {
