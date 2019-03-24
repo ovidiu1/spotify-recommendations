@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-
 const styles = theme => ({
   card: {
     display: 'flex',
@@ -34,11 +33,24 @@ const styles = theme => ({
     height: 38,
     width: 38,
   },
+  iframe: {
+    width: '100%'
+  },
+  hyperLink: {
+    color: 'white',
+    textDecoration: 'none'
+  },
+  songTitle: {
+    textDecoration: 'italic'
+  } 
+
 });
 
 const MediaCard = (props) => {
   const { classes } = props;
   // console.info("data from MediaCard", tracks);
+ const embedLink = `https://open.spotify.com/embed/track/`
+ const urilink  = `https://open.spotify.com/go?uri=`
   return (
     <React.Fragment>
       {props.tracks.map(track => (
@@ -47,15 +59,15 @@ const MediaCard = (props) => {
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5">
-                {track.artists[0].name}
+                <a class={classes.hyperLink} href={track.artists[0].external_urls.spotify} target="_blank" rel="noopener noreferrer"> {track.artists[0].name} </a>
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                {track.name}
+              <Typography  variant="subtitle1" color="textSecondary">
+               {track.name}
               </Typography>
             </CardContent>
             <div className={classes.controls}>
               <IconButton aria-label="Play/pause">
-                <PlayArrowIcon className={classes.playIcon} href={track.external_urls.spotify} />
+                <PlayArrowIcon className={classes.playIcon} />
               </IconButton>
             </div>
           </div>
@@ -64,7 +76,17 @@ const MediaCard = (props) => {
             image={track.album.images[0].url}
             title="Live from space album cover"
           />
-        </Card>
+      </Card>
+      <iframe className={classes.iframe} 
+              src={embedLink+track.id} 
+              width="300" 
+              height="80" 
+              frameborder="0" 
+              allowtransparency="true" 
+              allow="encrypted-media"
+              title="song"
+              >
+              </iframe>
         </Grid>
       ))}
     </React.Fragment>

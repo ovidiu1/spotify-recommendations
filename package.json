@@ -1,6 +1,7 @@
 {
   "name": "spotify-recommendations",
-  "version": "0.1.5",
+  "author": "Ovidiu Olea",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",

@@ -1,22 +1,26 @@
 import React, { Component } from 'react'
 import AppBar from '@material-ui/core/AppBar';
-import { withStyles } from '@material-ui/core/styles';
+import {  withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ErrorComponent from '../../components/Error/ErrorComponent';
 import MediaCard from '../../components/Crads/MediaCard';
 import axios from 'axios';
 
-
-const styles = theme => ({
+const styles = theme  => ({
   root: {
     flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
   wrapper: {
-    padding: '16px'
-  }
+    padding: '50px'
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
+  },
 });
 
 export class GenresBar extends Component {
@@ -24,12 +28,10 @@ export class GenresBar extends Component {
     super(props);
     this.state = {
       value: 'heavy-metal',
-      seedGenres: '',
       tracks: [],
       isLoading: false,
       error: null
     }
-    this.myRef = React.createRef();
   }
   
   componentDidMount() {
@@ -38,25 +40,46 @@ export class GenresBar extends Component {
   }
 
   getData = () => {
-    const token = '';
+    const token = 'BQAvYCrspONNGXCJ8ynrYY0ZHstprBbnuJrWtW2h2tLzcYUCEo8dQSA0aiI7KHyj8CLeO9Ynf0qLYVxYcRO1RX_t4k9vWDh9-MQsuqzNXQyXScl9D3YY-1LDp4RLwCEG9ucPpJWA5v5Q_u6jdfM-Z9-4G7v0M41ry_6h9AhbPLTwOZ8OdiFKY-kWarSIJg';
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
 
     const endPoint = 'https://api.spotify.com/v1/recommendations';
-    const limit = 10;
+    const limit = 18;
     let link = `${endPoint}?limit=${limit}&seed_genres=${this.state.value}`;
     console.info(link);
 
     axios.get(link, config) 
     .then(result => this.setState({
       tracks: result.data.tracks,
+      isLoading: false
     }))
     .catch(error => this.setState({
       error: true,
       isLoading: false
     }));
   }
+
+  getGenres = () => {
+    const token = '';
+    
+    const config = {
+        headers: { 'Authorization': "Bearer " + token }
+      }
+    const endPoint = 'https://api.spotify.com/v1/recommendations/available-genre-seeds'
+
+    axios.get(endPoint, config)
+        .then(result => this.setState({
+            genres: result.data.genres,
+            isLoading: false
+
+        }))
+        .catch(error => this.setState({
+            error: true,
+            isLoading: false
+        }));
+}
 
   handleChange = (event, value) => {
     this.setState({ value },() => {
@@ -66,7 +89,7 @@ export class GenresBar extends Component {
 
     render() {
       const { classes } = this.props;
-      const { value, tracks } = this.state;
+      const { value, tracks, isLoading, error } = this.state;
       console.info('track', tracks);
       console.info('Genres',value);
     return (
@@ -84,7 +107,10 @@ export class GenresBar extends Component {
             <Tab label="House" value="deep-house" />
             <Tab label="Drum and Base" value="drum-and-bass" />
             <Tab label="Electro" value="electro"/>
+            <Tab label="Pop" value="pop"/>
+            <Tab label="Hip Hop" value="hip-hop"/>
           </Tabs>
+
         </AppBar>
         <Grid container
         className={classes.wrapper}
@@ -92,13 +118,9 @@ export class GenresBar extends Component {
         direction='row'
         alignItems='center'
         justify='center'>
-        
-        <MediaCard tracks={tracks}></MediaCard>
-
-        {/* {value === 'heavy-metal' && <MediaCard tracks={tracks}></MediaCard>}
-        {value === 'deep-house' && <MediaCard tracks={tracks}></MediaCard>}
-        {value === 'drum-and-bass' && <MediaCard tracks={tracks}></MediaCard>}
-        {value === 'electro' && <MediaCard tracks={tracks}></MediaCard>} */}
+        {isLoading ? <CircularProgress className={classes.progress} /> : ''}
+        { error ? <ErrorComponent /> : '' }
+         <MediaCard tracks={tracks}></MediaCard>
         </ Grid>
       </div>
     )
