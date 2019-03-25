@@ -1,4 +1,4 @@
-## How-to-react
+## Spotify-recommendations
 spotify-recommendations project -> recommend tracks from spotify based on music genres
 
 ## Use

@@ -40,7 +40,7 @@ export class GenresBar extends Component {
   }
 
   getData = () => {
-    const token = 'BQAvYCrspONNGXCJ8ynrYY0ZHstprBbnuJrWtW2h2tLzcYUCEo8dQSA0aiI7KHyj8CLeO9Ynf0qLYVxYcRO1RX_t4k9vWDh9-MQsuqzNXQyXScl9D3YY-1LDp4RLwCEG9ucPpJWA5v5Q_u6jdfM-Z9-4G7v0M41ry_6h9AhbPLTwOZ8OdiFKY-kWarSIJg';
+    const token = 'BQCA6lPMNJ26kZy7Q65CBmL0NaqxvQPPneVFBV36tEUxpkjItpUEekVjb-LYZwMNGxttEQ-CC8Rz_OfsB6ZTR0aCwEifHDGjaR1WU66TlNcdI7zv2BSPF6DJ8psUnpgAzWrS_KHhqi9JgwKEF8i1HeTBeMrJfAB6raZ3i8gIbr_8HlwK6-efAgwQWqrWng';
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
@@ -48,7 +48,7 @@ export class GenresBar extends Component {
     const endPoint = 'https://api.spotify.com/v1/recommendations';
     const limit = 18;
     let link = `${endPoint}?limit=${limit}&seed_genres=${this.state.value}`;
-    console.info(link);
+    // console.info(link);
 
     axios.get(link, config) 
     .then(result => this.setState({
@@ -61,26 +61,6 @@ export class GenresBar extends Component {
     }));
   }
 
-  getGenres = () => {
-    const token = '';
-    
-    const config = {
-        headers: { 'Authorization': "Bearer " + token }
-      }
-    const endPoint = 'https://api.spotify.com/v1/recommendations/available-genre-seeds'
-
-    axios.get(endPoint, config)
-        .then(result => this.setState({
-            genres: result.data.genres,
-            isLoading: false
-
-        }))
-        .catch(error => this.setState({
-            error: true,
-            isLoading: false
-        }));
-}
-
   handleChange = (event, value) => {
     this.setState({ value },() => {
       this.getData();
@@ -90,8 +70,8 @@ export class GenresBar extends Component {
     render() {
       const { classes } = this.props;
       const { value, tracks, isLoading, error } = this.state;
-      console.info('track', tracks);
-      console.info('Genres',value);
+      // console.info('track', tracks);
+      // console.info('Genres',value);
     return (
       <div>
       <AppBar position="static" color="default">
