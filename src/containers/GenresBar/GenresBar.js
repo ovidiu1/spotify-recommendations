@@ -40,7 +40,7 @@ export class GenresBar extends Component {
   }
 
   getData = () => {
-    const token = process.env.ACCESS_TOKEN
+    const token = process.env.REACT_APP_ACCESS_TOKEN
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
