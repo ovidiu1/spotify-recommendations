@@ -40,7 +40,7 @@ export class GenresBar extends Component {
   }
 
   getData = () => {
-    const token = 'BQAvYCrspONNGXCJ8ynrYY0ZHstprBbnuJrWtW2h2tLzcYUCEo8dQSA0aiI7KHyj8CLeO9Ynf0qLYVxYcRO1RX_t4k9vWDh9-MQsuqzNXQyXScl9D3YY-1LDp4RLwCEG9ucPpJWA5v5Q_u6jdfM-Z9-4G7v0M41ry_6h9AhbPLTwOZ8OdiFKY-kWarSIJg';
+    const token = process.env.ACCESS_TOKEN
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
