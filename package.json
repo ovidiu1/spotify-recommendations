@@ -7,10 +7,14 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "querystring": "^0.2.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "request": "^2.88.0"
   },
   "scripts": {
     "start": "node app.js",

@@ -48,7 +48,6 @@ export class GenresBar extends Component {
     const endPoint = 'https://api.spotify.com/v1/recommendations';
     const limit = 18;
     let link = `${endPoint}?limit=${limit}&seed_genres=${this.state.value}`;
-    console.info(link);
 
     axios.get(link, config) 
     .then(result => this.setState({
@@ -90,8 +89,7 @@ export class GenresBar extends Component {
     render() {
       const { classes } = this.props;
       const { value, tracks, isLoading, error } = this.state;
-      console.info('track', tracks);
-      console.info('Genres',value);
+      
     return (
       <div>
       <AppBar position="static" color="default">
