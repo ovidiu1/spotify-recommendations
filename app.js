@@ -134,6 +134,7 @@ app.get('*', function(req, res) {
           'access_token': access_token
         });
         process.env.REACT_APP_ACCESS_TOKEN = access_token;
+        console.log("TOKEN:", access_token);
       }
     });
   });
