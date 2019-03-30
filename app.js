@@ -3,6 +3,7 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var envs = require('envs');
 
 var client_id = 'f93743cc338942fdb3b0dcaf10886e6e'; // Your client id
 var client_secret = 'cd70f1d164e84d2993f0b2a69753d494'; // Your secret
@@ -132,6 +133,7 @@ app.get('*', function(req, res) {
         res.send({
           'access_token': access_token
         });
+        process.env.REACT_APP_ACCESS_TOKEN = access_token;
       }
     });
   });
