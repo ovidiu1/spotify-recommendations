@@ -14,7 +14,7 @@ var redirect_uri = 'https://spotify-recommendations.herokuapp.com/'; // Your red
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-var generateRandomString = function(length) {
+var generateRandomString = function (length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -29,28 +29,27 @@ var stateKey = 'spotify_auth_state';
 const app = express();
 
 app.use(express.static('build'))
-   .use(cors())
-   .use(cookieParser());
+  .use(cors())
+  .use(cookieParser());
 
-   app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
 
-    var state = generateRandomString(16);
-    res.cookie(stateKey, state);
-  
-    // your application requests authorization
-    var scope = 'user-read-private user-read-email';
-    res.redirect('https://accounts.spotify.com/authorize?' +
-      querystring.stringify({
-        response_type: 'code',
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state
-      }));
-  });
-  
-app.get('*', function(req, res) {
-  
+  var state = generateRandomString(16);
+  res.cookie(stateKey, state);
+
+  // your application requests authorization
+  var scope = 'user-read-private user-read-email';
+  res.redirect('https://accounts.spotify.com/authorize?' +
+    querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+    }));
+});
+
+app.get('/callback', function (req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
 
@@ -78,11 +77,11 @@ app.get('*', function(req, res) {
       json: true
     };
 
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
 
         var access_token = body.access_token,
-            refresh_token = body.refresh_token;
+          refresh_token = body.refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -91,7 +90,7 @@ app.get('*', function(req, res) {
         };
 
         // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
+        request.get(options, function (error, response, body) {
           console.log(body);
         });
 
@@ -109,38 +108,42 @@ app.get('*', function(req, res) {
       }
     });
   }
-    res.sendFile(path.join(__dirname+'build/index.html'));
+})
+app.get('*', function (req, res) {
 
-  });
 
-  app.get('/refresh_token', function(req, res) {
+  res.sendFile(path.join(__dirname + 'build/index.html'));
 
-    // requesting access token from refresh token
-    var refresh_token = req.query.refresh_token;
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-      form: {
-        grant_type: 'refresh_token',
-        refresh_token: refresh_token
-      },
-      json: true
-    };
-  
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-        var access_token = body.access_token;
-        res.send({
-          'access_token': access_token
-        });
-      }
-    });
-  });
-  
-app.use(function(err, req, res,next){
-    console.log(err);
-    res.status(422).send({error: err.message});
 });
 
- const PORT = process.env.PORT || 3000;
- app.listen(PORT);
+app.get('/refresh_token', function (req, res) {
+
+  // requesting access token from refresh token
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+
+  request.post(authOptions, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+      res.send({
+        'access_token': access_token
+      });
+    }
+  });
+});
+
+app.use(function (err, req, res, next) {
+  console.log(err);
+  res.status(422).send({ error: err.message });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);

@@ -60,26 +60,6 @@ export class GenresBar extends Component {
     }));
   }
 
-  getGenres = () => {
-    const token = '';
-    
-    const config = {
-        headers: { 'Authorization': "Bearer " + token }
-      }
-    const endPoint = 'https://api.spotify.com/v1/recommendations/available-genre-seeds'
-
-    axios.get(endPoint, config)
-        .then(result => this.setState({
-            genres: result.data.genres,
-            isLoading: false
-
-        }))
-        .catch(error => this.setState({
-            error: true,
-            isLoading: false
-        }));
-}
-
   handleChange = (event, value) => {
     this.setState({ value },() => {
       this.getData();
