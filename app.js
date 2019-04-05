@@ -3,11 +3,12 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var path = require('path');
 var envs = require('envs');
 
 var client_id = 'f93743cc338942fdb3b0dcaf10886e6e'; // Your client id
 var client_secret = 'cd70f1d164e84d2993f0b2a69753d494'; // Your secret
-var redirect_uri = 'https://spotify-recommendations.herokuapp.com/'; // Your redirect uri
+var redirect_uri = 'http://localhost:3000/callback/'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -50,10 +51,12 @@ app.get('/login', function (req, res) {
 });
 
 app.get('/callback', function (req, res) {
+
   // your application requests refresh and access tokens
   // after checking the state parameter
 
   var code = req.query.code || null;
+  console.log('CODE:', code)
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
@@ -90,9 +93,9 @@ app.get('/callback', function (req, res) {
         };
 
         // use the access token to access the Spotify Web API
-        request.get(options, function (error, response, body) {
-          console.log(body);
-        });
+        // request.get(options, function (error, response, body) {
+        //   console.log(body);
+        // });
 
         // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
@@ -109,12 +112,14 @@ app.get('/callback', function (req, res) {
     });
   }
 })
-app.get('*', function (req, res) {
 
-
-  res.sendFile(path.join(__dirname + 'build/index.html'));
-
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname + 'index.html'));
 });
+
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname + '/login.html'));
+// });
 
 app.get('/refresh_token', function (req, res) {
 
@@ -146,4 +151,5 @@ app.use(function (err, req, res, next) {
 });
 
 const PORT = process.env.PORT || 3000;
+console.log('Server on port:', PORT);
 app.listen(PORT);

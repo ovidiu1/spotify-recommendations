@@ -18,7 +18,8 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
+    "sv": "react-scripts start",
     "postinstall": "react-scripts build",
     "build": "react-scripts build",
     "test": "react-scripts test",
