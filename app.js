@@ -8,7 +8,7 @@ var envs = require('envs');
 
 var client_id = 'f93743cc338942fdb3b0dcaf10886e6e'; // Your client id
 var client_secret = 'cd70f1d164e84d2993f0b2a69753d494'; // Your secret
-var redirect_uri = 'http://localhost:3000/callback/'; // Your redirect uri
+var redirect_uri = 'https://spotify-recommendations.herokuapp.com/callback/'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
