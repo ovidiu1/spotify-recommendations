@@ -29,44 +29,19 @@ export class GenresBar extends Component {
     this.state = {
       value: 'heavy-metal',
       tracks: [],
-      accessToken: '',
       isLoading: false,
       error: null
     }
   }
- 
-
+  
   componentDidMount() {
     this.setState({ isLoading: true });
     this.getData();
- }
-
+  }
 
   getData = () => {
-
-    function getHashParams() {
-      let hashParams = {};
-      let e, r = /([^&;=]+)=?([^&;]*)/g,
-          q = window.location.hash.substring(1);
-      while ( e = r.exec(q)) {
-         hashParams[e[1]] = decodeURIComponent(e[2]);
-      }
-      return hashParams;
-  };
-  
-  var params = getHashParams();
-  var access_token = params.access_token,
-  refresh_token = params.refresh_token,
-  error = params.error;
-
-  if (error) {
-    alert('There was an error during the authentication');
-  } else {
-    if (access_token) {
-      // render oauth info
-       let token = access_token;
-     console.info("TOKEN:", access_token)
-    
+    const token = process.env.REACT_APP_ACCESS_TOKEN;
+    console.log("FE TOKEN", token)
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
@@ -74,6 +49,7 @@ export class GenresBar extends Component {
     const endPoint = 'https://api.spotify.com/v1/recommendations';
     const limit = 18;
     let link = `${endPoint}?limit=${limit}&seed_genres=${this.state.value}`;
+    // console.info(link);
 
     axios.get(link, config) 
     .then(result => this.setState({
@@ -85,8 +61,6 @@ export class GenresBar extends Component {
       isLoading: false
     }));
   }
-  }
-}
 
   handleChange = (event, value) => {
     this.setState({ value },() => {
@@ -97,7 +71,8 @@ export class GenresBar extends Component {
     render() {
       const { classes } = this.props;
       const { value, tracks, isLoading, error } = this.state;
-      
+      // console.info('track', tracks);
+      // console.info('Genres',value);
     return (
       <div>
       <AppBar position="static" color="default">
