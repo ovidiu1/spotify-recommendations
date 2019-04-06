@@ -83,12 +83,29 @@ app.get('/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
-          refresh_token = body.refresh_token;
-          console.log('Body', body)
+        // var access_token = body.access_token,
+        //   refresh_token = body.refresh_token;
+
+          var params = getHashParams();
+          var access_token = params.body.access_token,
+          refresh_token = params.body.refresh_token;
+          
           process.env.REACT_APP_ACCESS_TOKEN = access_token;
           console.log("ENV",process.env.REACT_APP_ACCESS_TOKEN);
+
+
         // we can also pass the token to the browser to make requests from there
+
+        function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
+
         res.redirect('/#' +
           querystring.stringify({
             access_token: access_token,
