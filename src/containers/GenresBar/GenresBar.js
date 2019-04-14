@@ -50,6 +50,11 @@ export class GenresBar extends Component {
       }
       return hashParams;
     }
+
+    axios.get('/callback') 
+    .then(result => ( console.log(result.headers)))
+    .catch(error => (console.log(error)));
+
     var params = getHashParams();
             var access_token = params.access_token,
             refresh_token = params.refresh_token,
