@@ -25,8 +25,7 @@ class App extends Component {
     super(props);
     this.state = {
       value: 'heavy-metal',
-      tracks: [],
-      genres: null,
+      tracks: [], 
       isLoading: false,
       error: null
     }
@@ -38,7 +37,7 @@ class App extends Component {
   }
 
   getData = () => {
-    const token = 'BQCZ5XSVuKUfPKQ0U83VnpSMF6jMMZ--YwMnMmWQTEiF5ZrCUN7oGo6qZA277B1wZdqQ4v_WtHcusRmznYkdktimfBzDXLUZXZsZvOnskkal6XaReS-H2nIscHVLf9yZyq0UNKauCxZHY9akUGPrsVUzRGn1sXclm0cPfGWOhrU3o2CU-bwh09mo0nwCeCOXsao';
+    const token = 'BQDxd_1lZXxvLo7FFs3eycxQxNdMCVioYfCvo20OB2kcxWWQWpV-yMecg2e-Oilbr-nN1yN7_KAm0be4oSkZrAkMebQFovo3zvdpWFSHQ4wUa1fGJBOJXG5sN9ZjEBKzuUajon5wu5lZ2Q8zCmx8yIT19dt_sAB-L4p0jv0cKS3KZI9k1soOCD-eJziM6Wxkv2I';
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }

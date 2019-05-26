@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import 'typeface-roboto';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 const styles = theme => ({
