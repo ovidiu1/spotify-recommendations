@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import AppBar from '@material-ui/core/AppBar';
-import {  withStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import axios from 'axios';
+import AppBar from '@material-ui/core/AppBar'
+import { withStyles } from '@material-ui/core/styles'
 
-const styles = theme  => ({
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+
+import { connect } from 'react-redux'
+import { selectedGenres } from '../../actions'
+
+const styles = theme => ({
   root: {
     flexGrow: 1,
     width: '100%',
@@ -19,50 +22,35 @@ const styles = theme  => ({
   },
 });
 
-class GenresBar extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      genres: 'heavy-metal'
-    }
+const GenresBar = ({ dispatch }) => {
+  const [value, setValue] = React.useState('heavy-metal');
+
+  function handleChange(event, newValue) {
+    setValue(newValue);
+    dispatch(selectedGenres(newValue));
   }
-  
-  componentDidMount() {
-
-  }
-  
-  handleChange = (event, value) => {
-    this.setState({ value });
-    console.log('genres Selected:', value)
-    console.log('GenrerBAR')
-
-    this.props.callbackFromParent(value);
-    };
-
-    render() {
-      const { genres } = this.state;
-    return (
-      <div>
+  return (
+    <div>
       <AppBar position="static" color="default">
-          <Tabs
-            value={genres}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            <Tab label="Rock" value='heavy-metal' />
-            <Tab label="House" value='deep-house' />
-            <Tab label="Drum and Base" value='drum-and-bass' />
-            <Tab label="Electro" value='electro'/>
-            <Tab label="Pop" value='pop'/>
-            <Tab label="Hip Hop" value='hip-hop'/>
-          </Tabs>
-        </AppBar>
-      </div>
-    )
-  }
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
+          <Tab label="Rock" value='heavy-metal' />
+          <Tab label="House" value='deep-house' />
+          <Tab label="Drum and Base" value='drum-and-bass' />
+          <Tab label="Electro" value='electro' />
+          <Tab label="Pop" value='pop' />
+          <Tab label="Hip Hop" value='hip-hop' />
+        </Tabs>
+      </AppBar>
+    </div>
+  )
 }
 
-export default withStyles(styles)(GenresBar)
+export default connect()(GenresBar);
+withStyles(styles)(GenresBar);
