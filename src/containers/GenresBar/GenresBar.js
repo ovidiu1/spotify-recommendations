@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorComponent from '../../components/Error/ErrorComponent';
 import MediaCard from '../../components/Crads/MediaCard';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const styles = theme  => ({
@@ -36,6 +37,9 @@ export class GenresBar extends Component {
   
   componentDidMount() {
     this.setState({ isLoading: true });
+    if(this.state.error === true) {
+      Cookies.set('isLogin', false);
+    }
     this.getData();
   }
 
@@ -85,7 +89,7 @@ export class GenresBar extends Component {
     }))
     .catch(error => this.setState({
       error: true,
-      isLoading: false
+      isLoading: false,
     }));
   }
 }
@@ -99,8 +103,7 @@ export class GenresBar extends Component {
     render() {
       const { classes } = this.props;
       const { value, tracks, isLoading, error } = this.state;
-      // console.info('track', tracks);
-      // console.info('Genres',value);
+
     return (
       <div>
       <AppBar position="static" color="default">

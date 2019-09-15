@@ -14,13 +14,8 @@ const theme  = createMuiTheme({
   })
 
 class App extends Component {
-   constructor() {
-    super();
-     this.state = {
-      username: Cookies.get('sp_ab')
-   }
    
-   }
+   
   componentDidMount() {
     // Cookies.set('foo', 'bar')
     let isLogin = Cookies.get('isLogin');
