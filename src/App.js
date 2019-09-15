@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import Cookies from 'js-cookie';
 import green from '@material-ui/core/colors/green';
 import GenresBar from './containers/GenresBar/GenresBar'
 import './App.css'
@@ -11,7 +12,24 @@ const theme  = createMuiTheme({
     primary: green,
   },
   })
+
 class App extends Component {
+   constructor() {
+    super();
+     this.state = {
+      username: Cookies.get('sp_ab')
+   }
+   
+   }
+  componentDidMount() {
+    // Cookies.set('foo', 'bar')
+    let isLogin = Cookies.get('isLogin');
+
+    if(!isLogin) { 
+      window.location.replace('/login')
+    }
+  }
+
   render() {
     return (
       <>

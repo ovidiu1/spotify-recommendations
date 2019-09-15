@@ -7,9 +7,9 @@ var path = require('path');
 var envs = require('envs');
 
 var client_id = 'f93743cc338942fdb3b0dcaf10886e6e'; // Your client id
-var client_secret = 'cd70f1d164e84d2993f0b2a69753d494'; // Your secret
-var redirect_uri = 'http://localhost:3000/callback/'; // Your redirect uri
-// var redirect_uri = 'https://spotify-recommendations.herokuapp.com/callback/';
+var client_secret = '95867196726344898579019c638a7a3d'; // Your secret
+//var redirect_uri = 'http://localhost:3000/callback/'; // Your redirect uri
+var redirect_uri = 'https://spotify-recommendations.herokuapp.com/callback/';
 
 /**
  * Generates a random string containing numbers and letters
@@ -35,6 +35,7 @@ app.use(express.static('build'))
   .use(cookieParser());
 
 app.get('/login', function (req, res) {
+  res.sendFile(path.join(__dirname + 'index.html'));
 
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -90,13 +91,14 @@ app.get('/callback', function (req, res) {
           res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
           res.set("name","ovidiu");
           res.set("token", access_token);
+          res.cookie('isLogin', true);
 
           // we can also pass the token to the browser to make requests from there
-        // res.redirect('/#' +
-        //   querystring.stringify({
-        //     access_token: access_token,
-        //     refresh_token: refresh_token
-        //   }));
+        res.redirect('/#' +
+          querystring.stringify({
+            access_token: access_token,
+            refresh_token: refresh_token
+          }));
       } else {
         res.redirect('/#' +
           querystring.stringify({
@@ -107,9 +109,9 @@ app.get('/callback', function (req, res) {
   }
 })
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname + 'index.html'));
-});
+// app.get('*', function(req, res) {       
+//   res.sendFile(path.join(__dirname + 'index.html'));
+// });
 
 app.get('/refresh_token', function (req, res) {
 

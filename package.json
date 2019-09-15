@@ -11,12 +11,13 @@
     "cors": "^2.8.5",
     "envs": "^0.1.6",
     "express": "^4.16.4",
+    "js-cookie": "^2.2.1",
+    "nodemon": "^1.18.10",
     "querystring": "^0.2.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "request": "^2.88.0",
-    "nodemon": "^1.18.10"
+    "request": "^2.88.0"
   },
   "scripts": {
     "start": "nodemon app.js",
