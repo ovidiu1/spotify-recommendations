@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorComponent from '../../components/Error/ErrorComponent';
 import MediaCard from '../../components/Crads/MediaCard';
+import NotLoginComponent from '../../components/NotLogin/NotLoginComponent'
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -131,7 +132,8 @@ export class GenresBar extends Component {
         alignItems='center'
         justify='center'>
         {isLoading ? <CircularProgress className={classes.progress} /> : ''}
-        { error ? <ErrorComponent /> : '' }
+        {/* { error ? <ErrorComponent /> : '' } */}
+        { error ? <NotLoginComponent />: ''}
          <MediaCard tracks={tracks}></MediaCard>
         </ Grid>
       </div>

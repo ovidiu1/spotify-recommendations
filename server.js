@@ -9,11 +9,10 @@ const path = require('path');
   ? require('dotenv').config({ path: '.env.development.local' })
   : require('dotenv').config({ path: '.env.production' })
 );
-console.log('ENV:',process.env.NODE_ENV);
 
-const client_id = process.env.CLIENT_ID;
-const client_secret = process.env.CLIENT_SECRET;
-const redirect_uri = process.env.REDIRECT_URI;
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 
 /**
  * Generates a random string containing numbers and letters
