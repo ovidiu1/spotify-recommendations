@@ -1,47 +1,55 @@
 const express = require('express');
-var request = require('request'); // "Request" library
-var cors = require('cors');
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
-var path = require('path');
-var envs = require('envs');
+const request = require('request');
+const cors = require('cors');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
+const path = require('path');
 
-var client_id = 'f93743cc338942fdb3b0dcaf10886e6e'; // Your client id
-var client_secret = '95867196726344898579019c638a7a3d'; // Your secret
-//var redirect_uri = 'http://localhost:3000/callback/'; // Your redirect uri
-var redirect_uri = 'https://spotify-recommendations.herokuapp.com/callback/';
+(process.env.NODE_ENV === 'development'
+  ? require('dotenv').config({ path: '.env.development.local' })
+  : require('dotenv').config({ path: '.env.production' })
+);
+console.log('ENV:',process.env.NODE_ENV);
+
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
+const redirect_uri = process.env.REDIRECT_URI;
 
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-var generateRandomString = function (length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (var i = 0; i < length; i++) {
+let generateRandomString = (length) => {
+  let text = '';
+  let possible = process.env.POSSIBLE;
+
+  for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
 
-var stateKey = 'spotify_auth_state';
+let stateKey = 'spotify_auth_state';
 
 const app = express();
-
 app.use(express.static('build'))
   .use(cors())
   .use(cookieParser());
 
-app.get('/login', function (req, res) {
+// app.get('*', function (req, res) {
+//   res.sendFile(path.join(__dirname + '/index.html'));
+// });
+
+app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname + 'index.html'));
 
-  var state = generateRandomString(16);
+  let state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  // requests authorization
+  let scope = 'user-read-private user-read-email';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -54,12 +62,10 @@ app.get('/login', function (req, res) {
 
 app.get('/callback', function (req, res) {
 
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
+  // requests refresh and access tokens
+  let code = req.query.code || null;
+  let state = req.query.state || null;
+  let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
     res.redirect('/#' +
@@ -68,7 +74,7 @@ app.get('/callback', function (req, res) {
       }));
   } else {
     res.clearCookie(stateKey);
-    var authOptions = {
+    let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
@@ -84,16 +90,16 @@ app.get('/callback', function (req, res) {
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
+        let access_token = body.access_token,
           refresh_token = body.refresh_token;
-        
-          res.header("Access-Control-Allow-Origin", "*");
-          res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-          res.set("name","ovidiu");
-          res.set("token", access_token);
-          res.cookie('isLogin', true);
 
-          // we can also pass the token to the browser to make requests from there
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.set("name", "ovidiu");
+        res.set("token", access_token);
+        res.cookie('isLogin', true);
+
+        // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
           querystring.stringify({
             access_token: access_token,
@@ -107,17 +113,13 @@ app.get('/callback', function (req, res) {
       }
     });
   }
-})
-
-// app.get('*', function(req, res) {       
-//   res.sendFile(path.join(__dirname + 'index.html'));
-// });
+});
 
 app.get('/refresh_token', function (req, res) {
 
   // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
+  let refresh_token = req.query.refresh_token;
+  let authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
     form: {
@@ -129,7 +131,7 @@ app.get('/refresh_token', function (req, res) {
 
   request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
+      let access_token = body.access_token;
       res.send({
         'access_token': access_token
       });
@@ -142,6 +144,6 @@ app.use(function (err, req, res, next) {
   res.status(422).send({ error: err.message });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 console.log('Server on port:', PORT);
 app.listen(PORT);

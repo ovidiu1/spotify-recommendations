@@ -59,7 +59,7 @@ const MediaCard = (props) => {
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5">
-                <a class={classes.hyperLink} href={track.artists[0].external_urls.spotify} target="_blank" rel="noopener noreferrer"> {track.artists[0].name} </a>
+                <a className={classes.hyperLink} href={track.artists[0].external_urls.spotify} target="_blank" rel="noopener noreferrer"> {track.artists[0].name} </a>
               </Typography>
               <Typography  variant="subtitle1" color="textSecondary">
                {track.name}
@@ -81,7 +81,7 @@ const MediaCard = (props) => {
               src={embedLink+track.id} 
               width="300" 
               height="80" 
-              frameborder="0" 
+              frameBorder="0" 
               allowtransparency="true" 
               allow="encrypted-media"
               title="song"

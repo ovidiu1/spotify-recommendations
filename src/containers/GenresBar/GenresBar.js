@@ -59,8 +59,8 @@ export class GenresBar extends Component {
     .then(result => ( console.log(result.headers)))
     .catch(error => (console.log(error)));
 
-    var params = getHashParams();
-            var access_token = params.access_token,
+    let params = getHashParams();
+            let access_token = process.env.REACT_APP_DEV_TOKEN_MOCK || params.access_token,
             refresh_token = params.refresh_token,
             error = params.error;
 
@@ -106,7 +106,7 @@ export class GenresBar extends Component {
 
     return (
       <div>
-      <AppBar position="static" color="default">
+      <AppBar position="fixed" color="default">
           <Tabs
             value={value}
             onChange={this.handleChange}
