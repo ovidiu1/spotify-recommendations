@@ -1,4 +1,6 @@
-## How-to-react
+## Live Demo [https://spotify-recommendations.herokuapp.com/]
+
+## Spotify-recommendations
 spotify-recommendations project -> recommend tracks from spotify based on music genres
 
 ## Use
