@@ -1,7 +1,8 @@
 ## Spotify-recommendations
 
  Spotify-recommendations project -> recommend tracks from spotify based on music genres
- Live Demo [https://spotify-recommendations.herokuapp.com/]
+ Live Demo [https://spotify-recommendations.herokuapp.com/]<br>
+
 ## Use
  Material-UI - React UI framework
 
