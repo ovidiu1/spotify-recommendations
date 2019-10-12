@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorComponent from '../../components/Error/ErrorComponent';
 import MediaCard from '../../components/Crads/MediaCard';
+import NotLoginComponent from '../../components/NotLogin/NotLoginComponent'
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const styles = theme  => ({
@@ -36,11 +38,42 @@ export class GenresBar extends Component {
   
   componentDidMount() {
     this.setState({ isLoading: true });
+    if(this.state.error === true) {
+      Cookies.set('isLogin', false);
+    }
     this.getData();
   }
 
   getData = () => {
-    const token = 'BQCA6lPMNJ26kZy7Q65CBmL0NaqxvQPPneVFBV36tEUxpkjItpUEekVjb-LYZwMNGxttEQ-CC8Rz_OfsB6ZTR0aCwEifHDGjaR1WU66TlNcdI7zv2BSPF6DJ8psUnpgAzWrS_KHhqi9JgwKEF8i1HeTBeMrJfAB6raZ3i8gIbr_8HlwK6-efAgwQWqrWng';
+
+    function getHashParams() {
+      var hashParams = {};
+      var e, r = /([^&;=]+)=?([^&;]*)/g,
+          q = window.location.hash.substring(1);
+      while ( e = r.exec(q)) {
+         hashParams[e[1]] = decodeURIComponent(e[2]);
+      }
+      return hashParams;
+    }
+
+    axios.get('/callback') 
+    .then(result => ( console.log(result.headers)))
+    .catch(error => (console.log(error)));
+
+    let params = getHashParams();
+            let access_token = process.env.REACT_APP_DEV_TOKEN_MOCK || params.access_token,
+            refresh_token = params.refresh_token,
+            error = params.error;
+
+    if (error) {
+      alert('There was an error during the authentication');
+    } else {
+      if (access_token) {
+        // render oauth info
+          console.log('All good!');
+      }
+      const token = access_token;
+
     const config = {
       headers: { 'Authorization': "Bearer " + token }
     }
@@ -57,9 +90,10 @@ export class GenresBar extends Component {
     }))
     .catch(error => this.setState({
       error: true,
-      isLoading: false
+      isLoading: false,
     }));
   }
+}
 
   handleChange = (event, value) => {
     this.setState({ value },() => {
@@ -70,11 +104,9 @@ export class GenresBar extends Component {
     render() {
       const { classes } = this.props;
       const { value, tracks, isLoading, error } = this.state;
-      // console.info('track', tracks);
-      // console.info('Genres',value);
     return (
       <div>
-      <AppBar position="static" color="default">
+      <AppBar position="fixed" color="default">
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -99,7 +131,8 @@ export class GenresBar extends Component {
         alignItems='center'
         justify='center'>
         {isLoading ? <CircularProgress className={classes.progress} /> : ''}
-        { error ? <ErrorComponent /> : '' }
+        {/* { error ? <ErrorComponent /> : '' } */}
+        { error ? <NotLoginComponent />: ''}
          <MediaCard tracks={tracks}></MediaCard>
         </ Grid>
       </div>
