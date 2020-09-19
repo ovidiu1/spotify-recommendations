@@ -17,7 +17,7 @@
     "querystring": "^0.2.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
+    "react-scripts": "3.4.3",
     "request": "^2.88.0"
   },
   "scripts": {
@@ -37,5 +37,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy":"http://localhost:5000/"
+  "proxy": "http://localhost:5000/"
 }
